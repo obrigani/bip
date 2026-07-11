@@ -40,12 +40,12 @@ uint16_t* term_buffer = (uint16_t*)VGA_ADDRESS;
 
 static inline uint8_t vga_entry_color(enum Vga_Color fg, enum Vga_Color bg)
 {
-  return fg | bg << 4;
+  return (uint8_t)(fg | bg << 4);
 }
 
 static inline uint16_t vga_entry(unsigned char uchar, uint8_t color)
 {
-  return (uint16_t) uchar | (uint16_t) color << 8;
+  return (uint16_t)((uint16_t) uchar | (uint16_t) color << 8);
 }
 
 size_t strlen(const char* str)
@@ -77,14 +77,17 @@ void term_set_color(uint8_t color)
 void term_put_entry_at(char c, uint8_t color, size_t x, size_t y)
 {
   const size_t i = y * VGA_WIDTH + x;
-  term_buffer[i] = vga_entry(c, color);
+  term_buffer[i] = vga_entry((unsigned char)c, color);
 }
 
 void term_put_char(char c)
 {
-  if(c == '\n') {
-    term_row++;
-    return;
+  switch(c) {
+    case '\n':
+      term_row++;
+      term_col = 0;
+      return;
+    default: break;
   }
   term_put_entry_at(c, term_color, term_col, term_row);
   if(term_col++ == VGA_WIDTH) {

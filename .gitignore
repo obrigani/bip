@@ -9,3 +9,4 @@ bip
 kernel/obj
 kernel/bin
 kernel/.deps-obtained
+kernel/compile_commands.json
