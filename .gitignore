@@ -1,5 +1,11 @@
-iso_root/
+isodir/
+.cache
 
+.deps-obtained
 bip
 *.o
 *.iso
+
+kernel/obj
+kernel/bin
+kernel/.deps-obtained

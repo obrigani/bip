@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -e
+
+srcdir="$(dirname "$0")"
+test -z "$srcdir" && srcdir=.
+
+cd "$srcdir"
+
+rm -f .deps-obtained
+
+# In future there will be deps, but for now this file is empty
+
+touch .deps-obtained
