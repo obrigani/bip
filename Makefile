@@ -22,6 +22,9 @@ run-grub: $(IMAGE_NAME)-grub.iso
 .PHONY: all
 all: $(IMAGE_NAME).iso
 
+.PHONY: all-grub
+all-grub: $(IMAGE_NAME)-grub.iso
+
 kernel/.deps-obtained:
 	./kernel/get-deps
 

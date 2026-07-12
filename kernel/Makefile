@@ -16,6 +16,8 @@ CFLAGS = -ffreestanding \
          -Wconversion \
          -Wformat 
 
+CFLAGS += -Iinclude \
+
 LDFLAGS = -T linker.lds \
 		  -ffreestanding \
 		  -O2 \
