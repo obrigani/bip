@@ -25,15 +25,18 @@ all: $(IMAGE_NAME).iso
 kernel/.deps-obtained:
 	./kernel/get-deps
 
-limine-binary:
+limine-binary/.downloaded:
 	curl -L https://github.com/Limine-Bootloader/Limine/releases/latest/download/limine-binary.tar.gz | gunzip | tar -xf -
+	touch $@
 	
-.PHONY: kernel
-kernel: kernel/.deps-obtained
+limine-binary/.built: limine-binary/.downloaded
+	make -C limine-binary
+	touch $@
+	
+kernel/bin/kernel: kernel/.deps-obtained
 	$(MAKE) -C kernel
 
-$(IMAGE_NAME).iso: kernel limine-binary
-	make -C limine-binary
+$(IMAGE_NAME).iso: kernel/bin/kernel limine-binary/.built
 	mkdir -p isodir
 
 	mkdir -p isodir/boot
@@ -56,7 +59,7 @@ $(IMAGE_NAME).iso: kernel limine-binary
 
 	rm -fr isodir
 
-$(IMAGE_NAME)-grub.iso: kernel
+$(IMAGE_NAME)-grub.iso: kernel/bin/kernel limine-binary/.built
 	mkdir -p isodir/boot/grub
 	cp kernel/bin/kernel isodir/boot/
 	cp grub.cfg isodir/boot/grub/

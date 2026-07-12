@@ -47,4 +47,4 @@ clean:
 
 .PHONY: distclean
 distclean:
-	rm -fr .deps-obtained
+	rm -fr .deps-obtained compile_commands.json
