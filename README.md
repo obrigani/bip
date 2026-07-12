@@ -6,8 +6,7 @@ bip (Bip Is Perfect)
 <p align="center">
   <a href="https://codeberg.org/obrigani/bip"><img src="https://img.shields.io/badge/codeberg-repo-blue?style=for-the-badge&logo=codeberg&logoColor=white" alt="Codeberg Repo"></a>
   <a href="https://github.com/obrigani/bip"><img src="https://img.shields.io/badge/github-repo-black?style=for-the-badge&logo=github" alt="Github Mirror"></a>
-  <a href="https://www.gnu.org/licenses/gpl-3.0.txt"><img src="https://img.shields.io/badge/license-gplv3.0--only-%23BD0000?style=for-the-badge
-" alt="Licensed under GPLv3.0-only"></a>
+  <a href="https://www.gnu.org/licenses/gpl-3.0.txt"><img src="https://img.shields.io/badge/license-gplv3.0--only-%23BD0000?style=for-the-badge" alt="Licensed under GPLv3.0-only"></a>
 </p>
 
 ## What exactly is bip?
