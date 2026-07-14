@@ -1,10 +1,8 @@
 .SUFFIXES =
 
-override OUTPUT := kernel
-
 TOOLCHAIN_PREFIX := i686-elf-
-
 CC = $(TOOLCHAIN_PREFIX)gcc
+AR = $(TOOLCHAIN_PREFIX)ar
 CFLAGS = -ffreestanding \
          -c \
          -std=gnu99 \
@@ -16,41 +14,32 @@ CFLAGS = -ffreestanding \
          -Wconversion \
          -Wformat 
 
-CFLAGS += -I../sysroot/usr/include \
-		  -L../sysroot/usr/lib \
-		  -Lsysroot/usr/lib \
-		  -Lusr/lib \
-		  -lk
+CFLAGS += -Iinclude 
 
 LDFLAGS = -T linker.lds \
 		  -ffreestanding \
 		  -O2 \
 		  -nostdlib \
 		  -lgcc
-    	 
-AS = $(TOOLCHAIN_PREFIX)as
 
-override SRCFILES := $(shell find -L src -type f 2>/dev/null | LC_ALL=C sort)
+BINARIES = libk.a
+
+override SRCFILES := $(shell find -L string -type f 2>/dev/null | LC_ALL=C sort)
 override CFILES := $(filter %.c,$(SRCFILES))
 override ASFILES := $(filter %.asm,$(SRCFILES))
 override OBJ := $(addprefix obj/,$(CFILES:.c=.c.o) $(ASFILES:.asm=.asm.o))
 
-bin/$(OUTPUT): Makefile linker.lds $(OBJ)
-	mkdir -p "$(dir $@)"
-	$(CC) $(LDFLAGS) $(OBJ) -o $@
+libk.a: $(OBJ)
+	$(AR) rcs $@ $(OBJ)
 
 obj/%.c.o: %.c Makefile
 	mkdir -p "$(dir $@)"
 	$(CC) $(CFLAGS) -c $< -o $@
 
-obj/%.asm.o: %.asm Makefile
-	mkdir -p "$(dir $@)"
-	$(AS) -c $< -o $@
-
 .PHONY: clean
 clean:
-	rm -fr obj bin
+	rm -fr obj
 
 .PHONY: distclean
 distclean:
-	rm -fr .deps-obtained compile_commands.json
+	@echo Distcleaned libk

@@ -1,13 +1,17 @@
 isodir/
-limine-binary
-.cache
+sysroot/
+limine-binary/
+.cache/
 
 .deps-obtained
 bip
 *.o
+*.a
 *.iso
 
 kernel/obj
 kernel/bin
 kernel/.deps-obtained
 kernel/compile_commands.json
+
+libk/*.a

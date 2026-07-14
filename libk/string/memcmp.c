@@ -15,7 +15,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <string.h>
 #include <stddef.h>
 
 int memcmp(const void *ptagret1, const void *ptarget2, size_t size)
@@ -31,40 +30,3 @@ int memcmp(const void *ptagret1, const void *ptarget2, size_t size)
   return 0;
 }
 
-void* memcpy(void* restrict ptarget, const void* restrict psource, size_t size)
-{
-  unsigned char* ptrgt = (unsigned char*) ptarget;
-  const unsigned char* psrc = (const unsigned char*) psource;
-  for(size_t i = 0; i < size; i++)
-    ptrgt[i] = psrc[i];
-  return ptarget;  
-}
-
-void* memmove(void* ptarget, const void* psource, size_t size)
-{
-  unsigned char* ptrgt = (unsigned char*) ptarget;
-  const unsigned char* psrc = (const unsigned char*) psource;
-  if(ptrgt < psrc) {
-    for(size_t i = 0; i < size; i++)
-      ptrgt[i] = psrc[i];
-  } else {
-    for(size_t i = size; i != 0; i--)
-      ptrgt[i - 1] = psrc[i - 1];
-  }
-  return ptarget;
-}
-
-void* memset(void* pbuffer, int value, size_t size)
-{
-  unsigned char* pbuf = (unsigned char*) pbuffer;
-  for(size_t i = 0; i < size; i++)
-    pbuf[i] = (unsigned char) value;
-  return pbuffer;
-}
-
-size_t strlen(const char* str)
-{
-  size_t len = 0;
-  while(str[len]) len++;
-  return len;
-}

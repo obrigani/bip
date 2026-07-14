@@ -38,14 +38,34 @@ limine-binary/.built: limine-binary/.downloaded
 	make -C limine-binary
 	touch $@
 	
-kernel/bin/kernel: kernel/.deps-obtained
+kernel/bin/kernel: kernel/.deps-obtained headers-install sysroot/usr/lib/libk.a
 	$(MAKE) -C kernel
 
-$(IMAGE_NAME).iso: kernel/bin/kernel limine-binary/.built
+libk/libk.a:
+	$(MAKE) -C libk
+
+sysroot/usr/lib/libk.a: libk/libk.a
+	mkdir -p sysroot/usr/lib
+	cp libk/libk.a sysroot/usr/lib
+
+# I know that ts will result in it reinstalling every time
+.PHONY: headers-install
+headers-install: sysroot/usr/include/.headers-installed
+sysroot/usr/include/.headers-installed:
+	mkdir -p sysroot/usr/include
+	cp -R --preserve=timestamps kernel/include/. sysroot/usr/include
+	cp -R --preserve=timestamps libk/include/. sysroot/usr/include
+	touch $@
+	
+sysroot/boot/kernel: kernel/bin/kernel sysroot/usr/lib/libk.a headers-install
+	mkdir -p sysroot/boot
+	cp kernel/bin/kernel sysroot/boot
+
+$(IMAGE_NAME).iso: limine-binary/.built sysroot/boot/kernel
 	mkdir -p isodir
 
 	mkdir -p isodir/boot
-	cp -v kernel/bin/kernel isodir/boot/
+	cp -v sysroot/boot/kernel isodir/boot/
 	mkdir -p isodir/boot/limine
 	cp -v limine.conf limine-binary/limine-bios.sys limine-binary/limine-bios-cd.bin \
 	      limine-binary/limine-uefi-cd.bin isodir/boot/limine/
@@ -64,7 +84,7 @@ $(IMAGE_NAME).iso: kernel/bin/kernel limine-binary/.built
 
 	rm -fr isodir
 
-$(IMAGE_NAME)-grub.iso: kernel/bin/kernel limine-binary/.built
+$(IMAGE_NAME)-grub.iso: sysroot/boot/kernel
 	mkdir -p isodir/boot/grub
 	cp kernel/bin/kernel isodir/boot/
 	cp grub.cfg isodir/boot/grub/
@@ -76,7 +96,8 @@ clean:
 	make -C kernel clean
 	rm -fr $(IMAGE_NAME).iso \
 		   $(IMAGE_NAME)-grub.iso \
-		   isodir 
+		   isodir \
+		   sysroot
 
 .PHONY: distclean
 distclean:
