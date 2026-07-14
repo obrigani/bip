@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "kernel/vga_tty.h"
+#include <kernel/tty.h>
 
 #ifdef __linux__
 #error "Use a cross-compiler, dumbass"

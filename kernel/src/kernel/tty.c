@@ -15,18 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "kernel/vga_tty.h"
-#include "memory.h"
+#include <kernel/tty.h>
+#include <vga.h>
+#include <string.h>
 
 size_t term_row;
 size_t term_col;
 uint8_t term_color;
 uint16_t* term_buffer = (uint16_t*)VGA_ADDRESS;
-
-static inline uint16_t vga_entry(unsigned char uchar, uint8_t color)
-{
-  return (uint16_t)((uint16_t) uchar | (uint16_t) color << 8);
-}
 
 void init_term(void)
 {

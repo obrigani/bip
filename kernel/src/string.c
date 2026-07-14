@@ -15,8 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
-#include "memory.h"
+#include <string.h>
 #include <stddef.h>
 
 int memcmp(const void *ptagret1, const void *ptarget2, size_t size)

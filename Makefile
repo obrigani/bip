@@ -21,9 +21,11 @@ run-grub: $(IMAGE_NAME)-grub.iso
 
 .PHONY: all
 all: $(IMAGE_NAME).iso
+	@echo System image with the Limine bootloader built successfully
 
 .PHONY: all-grub
 all-grub: $(IMAGE_NAME)-grub.iso
+	@echo System image with the GRUB bootloader built successfully
 
 kernel/.deps-obtained:
 	./kernel/get-deps
